@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مراحل صناعة العسل - نشاط تفاعلي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;user-select:none;-webkit-user-select:none;font-family:'Cairo',Tahoma,Arial,sans-serif}
+body{margin:0;padding:10px;background:#e0f7fa;display:flex;flex-direction:column;align-items:center;min-height:100vh;overflow-x:hidden}
+.controls-bar{width:100%;max-width:1000px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+.btn{background:linear-gradient(135deg,#ff9800,#f57c00);color:#fff;border:3px solid #fff;padding:8px 18px;border-radius:25px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.15);transition:transform .2s;display:flex;align-items:center;gap:8px}
+.btn:hover{transform:scale(1.05)}.btn:active{transform:scale(.95)}
+.btn-music{background:linear-gradient(135deg,#4caf50,#388e3c)}
+.game-board{position:relative;width:100%;max-width:1000px;background:#e1f5fe;border-radius:24px;border:6px solid #fff;box-shadow:0 15px 35px rgba(0,0,0,.15);overflow:hidden}
+.scene-area{position:relative;width:100%;height:500px;background:linear-gradient(180deg,#b3e5fc 0%,#e1f5fe 65%,#8bc34a 65%,#7cb342 100%)}
+.cloud{position:absolute;background:rgba(255,255,255,.85);border-radius:50px;animation:floatCloud linear infinite;z-index:1}
+.cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%}
+.c1{width:100px;height:35px;top:30px;left:-120px;animation-duration:35s}
+.c1::before{width:50px;height:50px;top:-25px;left:15px}.c1::after{width:35px;height:35px;top:-15px;left:55px}
+.c2{width:80px;height:28px;top:90px;left:-100px;animation-duration:28s;animation-delay:10s}
+.c2::before{width:40px;height:40px;top:-20px;left:10px}
+@keyframes floatCloud{to{transform:translateX(1150px)}}
+.wooden-title{position:relative;z-index:5;margin:15px auto 0;width:340px;max-width:60%;background:linear-gradient(180deg,#f3c68f,#dfa362);border:4px solid #8d5524;border-radius:18px;padding:8px 20px;text-align:center;font-size:28px;font-weight:900;color:#4e2a0c;box-shadow:0 6px 0 #8d5524,0 10px 15px rgba(0,0,0,.2)}
+.instruction-board{position:absolute;top:25px;right:25px;width:175px;background:#e6c29f;border:3px dashed #8d5524;border-radius:12px;padding:12px;text-align:center;font-size:14px;font-weight:700;color:#3e2723;transform:rotate(3deg);box-shadow:3px 5px 10px rgba(0,0,0,.15);z-index:5}
+.hanging-hive{position:absolute;top:-5px;left:35px;z-index:5;transform-origin:top center;animation:swingHive 4s ease-in-out infinite}
+@keyframes swingHive{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.flying-bee{position:absolute;font-size:32px;z-index:6;animation:flyBee 3s ease-in-out infinite alternate;filter:drop-shadow(2px 4px 4px rgba(0,0,0,.2))}
+.bee-left{top:200px;left:45px}.bee-right{top:210px;right:140px;animation-delay:1s}
+@keyframes flyBee{0%{transform:translateY(0) rotate(-5deg)}100%{transform:translateY(-15px) rotate(5deg)}}
+.bee-quote{position:absolute;top:245px;left:30px;text-align:center;color:#3e2723;font-weight:700;font-size:14px;line-height:1.5;z-index:5}
+.tree-svg{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);width:480px;height:390px;z-index:2;pointer-events:none}
+.drop-zone{position:absolute;width:105px;height:105px;background:rgba(255,250,240,.95);border:3px dashed #8d6e63;border-radius:50%;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 3px 8px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.15);transition:transform .3s,border-color .3s,background .3s,box-shadow .3s}
+.drop-zone.hovered{transform:scale(1.12);border-color:#ff9800;background:#fff8e1;box-shadow:0 0 20px rgba(255,152,0,.6)}
+.drop-zone.filled{border-style:solid;border-color:#4caf50;background:#fff}
+.step-badge{position:absolute;top:-12px;width:28px;height:28px;border-radius:50%;color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2);z-index:12}
+.zone-1{top:85px;left:0;right:0;margin:0 auto}.zone-1 .step-badge{background:#fbc02d}
+.zone-2{top:145px;left:26%}.zone-2 .step-badge{background:#66bb6a}
+.zone-3{top:280px;left:29%}.zone-3 .step-badge{background:#ef5350}
+.zone-4{top:280px;right:29%}.zone-4 .step-badge{background:#ab47bc}
+.zone-5{top:145px;right:26%}.zone-5 .step-badge{background:#29b6f6}
+.fence{position:absolute;bottom:45px;right:40px;z-index:3}
+.choices-label{position:absolute;bottom:0;left:25px;background:#fff;padding:5px 18px;border-radius:15px 15px 0 0;font-weight:800;font-size:16px;color:#4e342e;box-shadow:0 -3px 8px rgba(0,0,0,.1);z-index:10}
+.options-tray{background:#fffdf7;padding:18px 20px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:12px;border-top:4px solid #dcedc8;min-height:135px}
+.drag-card{width:145px;height:105px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:grab;box-shadow:0 5px 12px rgba(0,0,0,.1);border:3px solid rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;touch-action:none;position:relative;z-index:20}
+.drag-card:hover{transform:translateY(-5px) scale(1.04);box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.card-hive{background:#e8f5e9;border-color:#a5d6a7}.card-honey{background:#e3f2fd;border-color:#90caf9}.card-comb{background:#f3e5f5;border-color:#ce93d8}.card-flower{background:#fce4ec;border-color:#f48fb1}.card-bee{background:#fff8e1;border-color:#ffe082}
+.card-icon{width:55px;height:55px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.card-title{font-size:15px;font-weight:800;color:#37474f;margin-top:4px;pointer-events:none}
+.placed-item{display:flex;flex-direction:column;align-items:center;justify-content:center;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
+.placed-item svg{width:48px;height:48px}.placed-item span{font-size:12px;font-weight:800;color:#2e7d32}
+@keyframes popIn{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{margin-left:0}25%{margin-left:-8px}75%{margin-left:8px}}
+.shake{animation:shake .35s ease}
+.zone-1.shake{animation:none}
+.win-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center}
+.win-box{background:linear-gradient(180deg,#fffde7,#fff9c4);border:6px solid #fbc02d;border-radius:30px;padding:35px 45px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:popIn .5s ease;margin:16px}
+.win-box h2{color:#e65100;font-size:32px;margin:10px 0}.win-box p{color:#5d4037;font-size:20px;font-weight:700}
+footer{margin-top:15px;background:#fff;padding:12px 30px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,.08);border:2px solid #ffe082;text-align:center;font-size:17px;font-weight:800;color:#4e342e}
+footer span{color:#e65100}
+.confetti{position:fixed;width:12px;height:12px;top:-15px;z-index:999;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+@media(max-width:850px){
+.scene-area{height:430px}.instruction-board{width:135px;font-size:12px;right:10px;padding:8px}
+.hanging-hive{left:10px;transform:scale(.8)}.bee-quote{display:none}
+.drop-zone{width:85px;height:85px}.zone-2{left:16%}.zone-3{left:20%}.zone-4{right:20%}.zone-5{right:16%}
+.drag-card{width:110px;height:90px}.tree-svg{width:360px;height:300px}.wooden-title{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="controls-bar">
+  <button class="btn btn-music" id="musicBtn" onclick="toggleMusic()">🎵 تشغيل الموسيقى</button>
+  <button class="btn" onclick="resetGame()">🔄 إعادة اللعب</button>
+</div>
+
+<div class="game-board">
+  <div class="scene-area">
+    <div class="cloud c1"></div><div class="cloud c2"></div>
+    <div class="wooden-title">مراحل صناعة العسل</div>
+    <div class="instruction-board">اسحب العنصر المناسب<br>وقم بوضعه في المكان<br>الصحيح على الشجرة ❤️</div>
+    <div class="hanging-hive">
+      <svg width="85" height="115" viewBox="0 0 100 130">
+        <rect x="46" y="0" width="8" height="25" fill="#8d5524"/>
+        <ellipse cx="50" cy="35" rx="22" ry="10" fill="#fbc02d" stroke="#f57f17" stroke-width="2"/>
+        <ellipse cx="50" cy="50" rx="32" ry="12" fill="#fdd835" stroke="#f57f17" stroke-width="2"/>
+        <ellipse cx="50" cy="68" rx="38" ry="14" fill="#fbc02d" stroke="#f57f17" stroke-width="2"/>
+        <ellipse cx="50" cy="86" rx="32" ry="12" fill="#fdd835" stroke="#f57f17" stroke-width="2"/>
+        <ellipse cx="50" cy="102" rx="20" ry="9" fill="#fbc02d" stroke="#f57f17" stroke-width="2"/>
+        <path d="M50 76 C42 66, 32 72, 50 86 C68 72, 58 66, 50 76 Z" fill="#5d4037"/>
+      </svg>
+    </div>
+    <div class="flying-bee bee-left">🐝</div>
+    <div class="flying-bee bee-right">🐝</div>
+    <div class="bee-quote"><strong>النحلة</strong><br>صغيرة في حجمها..<br>كبيرة في أثرها ❤️</div>
+    <div class="fence">
+      <svg width="90" height="65" viewBox="0 0 90 65">
+        <rect x="5" y="20" width="80" height="8" fill="#8d5524"/><rect x="5" y="42" width="80" height="8" fill="#8d5524"/>
+        <polygon points="15,5 25,15 25,65 15,65" fill="#a1662f"/><polygon points="40,5 50,15 50,65 40,65" fill="#a1662f"/><polygon points="65,5 75,15 75,65 65,65" fill="#a1662f"/>
+      </svg>
+    </div>
+    <svg class="tree-svg" viewBox="0 0 400 350">
+      <path d="M180,340 Q188,240 185,180 L110,120 L122,108 L188,160 L192,80 L208,80 L212,150 L285,105 L295,118 L215,175 L275,215 L265,228 L212,195 Q215,260 225,340 Z" fill="#795548" stroke="#4e342e" stroke-width="3"/>
+      <path d="M185,210 L125,225 L130,238 L187,225 Z" fill="#795548" stroke="#4e342e" stroke-width="2"/>
+      <ellipse cx="145" cy="95" rx="22" ry="12" transform="rotate(-30 145 95)" fill="#66bb6a"/>
+      <ellipse cx="255" cy="90" rx="22" ry="12" transform="rotate(30 255 90)" fill="#4caf50"/>
+      <ellipse cx="95" cy="145" rx="24" ry="12" transform="rotate(-15 95 145)" fill="#81c784"/>
+      <ellipse cx="305" cy="140" rx="24" ry="12" transform="rotate(20 305 140)" fill="#66bb6a"/>
+      <ellipse cx="105" cy="210" rx="20" ry="11" transform="rotate(-25 105 210)" fill="#4caf50"/>
+      <ellipse cx="295" cy="210" rx="20" ry="11" transform="rotate(25 295 210)" fill="#81c784"/>
+      <ellipse cx="165" cy="65" rx="18" ry="10" transform="rotate(-45 165 65)" fill="#81c784"/>
+      <ellipse cx="235" cy="65" rx="18" ry="10" transform="rotate(45 235 65)" fill="#66bb6a"/>
+    </svg>
+    <div class="drop-zone zone-1" data-accept="bee"><div class="step-badge">1</div></div>
+    <div class="drop-zone zone-2" data-accept="flower"><div class="step-badge">2</div></div>
+    <div class="drop-zone zone-3" data-accept="hive"><div class="step-badge">3</div></div>
+    <div class="drop-zone zone-4" data-accept="comb"><div class="step-badge">4</div></div>
+    <div class="drop-zone zone-5" data-accept="honey"><div class="step-badge">5</div></div>
+    <div class="choices-label">🐝 الاختيارات:</div>
+  </div>
+
+  <div class="options-tray" id="optionsTray">
+    <div class="drag-card card-hive" data-id="hive" data-label="الخلية">
+      <div class="card-icon"><svg viewBox="0 0 64 64" width="50" height="50">
+        <polygon points="10,24 32,8 54,24" fill="#8d5524"/>
+        <rect x="14" y="24" width="36" height="32" fill="#d7a86e" stroke="#8d5524" stroke-width="2"/>
+        <line x1="14" y1="34" x2="50" y2="34" stroke="#8d5524" stroke-width="2"/><line x1="14" y1="44" x2="50" y2="44" stroke="#8d5524" stroke-width="2"/>
+        <rect x="27" y="46" width="10" height="10" fill="#4e2a0c"/></svg></div>
+      <div class="card-title">الخلية</div>
+    </div>
+    <div class="drag-card card-honey" data-id="honey" data-label="العسل">
+      <div class="card-icon"><svg viewBox="0 0 64 64" width="50" height="50">
+        <rect x="18" y="18" width="28" height="36" rx="10" fill="#ffca28" stroke="#f57f17" stroke-width="2.5"/>
+        <path d="M18,24 Q24,32 30,25 Q36,33 46,24 L46,18 L18,18 Z" fill="#fff8e1"/>
+        <rect x="16" y="10" width="32" height="8" rx="4" fill="#d7ccc8" stroke="#8d6e63" stroke-width="2"/></svg></div>
+      <div class="card-title">العسل</div>
+    </div>
+    <div class="drag-card card-comb" data-id="comb" data-label="قرص العسل">
+      <div class="card-icon"><svg viewBox="0 0 64 64" width="50" height="50">
+        <polygon points="32,10 42,16 42,28 32,34 22,28 22,16" fill="#ffca28" stroke="#e65100" stroke-width="2"/>
+        <polygon points="22,28 32,34 32,46 22,52 12,46 12,34" fill="#ffb300" stroke="#e65100" stroke-width="2"/>
+        <polygon points="42,28 52,34 52,46 42,52 32,46 32,34" fill="#ffd54f" stroke="#e65100" stroke-width="2"/></svg></div>
+      <div class="card-title">قرص العسل</div>
+    </div>
+    <div class="drag-card card-flower" data-id="flower" data-label="رحيق الأزهار">
+      <div class="card-icon"><svg viewBox="0 0 64 64" width="50" height="50">
+        <rect x="30" y="34" width="4" height="24" fill="#4caf50"/>
+        <ellipse cx="24" cy="46" rx="7" ry="4" transform="rotate(-25 24 46)" fill="#66bb6a"/>
+        <circle cx="32" cy="14" r="8" fill="#f48fb1"/><circle cx="43" cy="22" r="8" fill="#f48fb1"/><circle cx="39" cy="34" r="8" fill="#f48fb1"/><circle cx="25" cy="34" r="8" fill="#f48fb1"/><circle cx="21" cy="22" r="8" fill="#f48fb1"/>
+        <circle cx="32" cy="25" r="7" fill="#ffee58"/></svg></div>
+      <div class="card-title">رحيق الأزهار</div>
+    </div>
+    <div class="drag-card card-bee" data-id="bee" data-label="النحلة">
+      <div class="card-icon"><svg viewBox="0 0 64 64" width="52" height="52">
+        <ellipse cx="36" cy="20" rx="8" ry="12" transform="rotate(-20 36 20)" fill="#e1f5fe" stroke="#81d4fa" stroke-width="2"/>
+        <ellipse cx="26" cy="20" rx="8" ry="12" transform="rotate(20 26 20)" fill="#e1f5fe" stroke="#81d4fa" stroke-width="2"/>
+        <ellipse cx="32" cy="36" rx="16" ry="12" fill="#fdd835" stroke="#3e2723" stroke-width="2"/>
+        <path d="M26,25 L26,47 M33,24 L33,48 M40,26 L40,46" stroke="#3e2723" stroke-width="3.5"/>
+        <circle cx="17" cy="35" r="7" fill="#3e2723"/><circle cx="15" cy="33" r="2" fill="#fff"/></svg></div>
+      <div class="card-title">النحلة</div>
+    </div>
+  </div>
+</div>
+
+<footer>اسم المقرر: <span>تصميم تعليمي</span> &nbsp;|&nbsp; إعداد الطالب: <span>شهاب محمود فؤاد أحمد</span></footer>
+
+<div class="win-modal" id="winModal">
+  <div class="win-box">
+    <div style="font-size:60px">🏆🐝🍯</div>
+    <h2>أحسنت يا بطل!</h2>
+    <p>لقد رتبت مراحل صناعة العسل بنجاح!</p>
+    <button class="btn" style="margin:15px auto 0;font-size:18px" onclick="resetGame()">العب مرة أخرى ⭐</button>
+  </div>
+</div>
+
+<script>
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null, musicPlaying = false, musicInterval = null, completedCount = 0;
+
+function initAudio(){
+  try{
+    if(!audioCtx) audioCtx = new AudioCtx();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+  }catch(e){}
+}
+function tone(freq, start, dur, vol, type){
+  if(!audioCtx) return;
+  const t = audioCtx.currentTime + start;
+  const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+  osc.type = type || 'triangle';
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(vol, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(t); osc.stop(t + dur);
+}
+function playSuccessSound(){ initAudio(); [523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*0.1,0.3,0.25)); }
+function playErrorSound(){ initAudio(); tone(220,0,0.25,0.25,'sine'); tone(160,0.12,0.2,0.2,'sine'); }
+function playWinFanfare(){
+  initAudio();
+  const m=[523.25,523.25,523.25,659.25,783.99,659.25,1046.5], t=[0,.15,.3,.45,.65,.85,1.05];
+  m.forEach((f,i)=>tone(f,t[i],0.35,0.3));
+}
+function toggleMusic(){
+  initAudio();
+  const btn = document.getElementById('musicBtn');
+  if(musicPlaying){
+    clearInterval(musicInterval); musicPlaying = false;
+    btn.innerHTML = '🎵 تشغيل الموسيقى';
+  }else{
+    musicPlaying = true;
+    btn.innerHTML = '🔇 إيقاف الموسيقى';
+    const notes=[261.63,329.63,392,329.63,293.66,349.23,440,392]; let step=0;
+    musicInterval = setInterval(()=>{ tone(notes[step%notes.length],0,0.45,0.06,'sine'); step++; },500);
+  }
+}
+
+const cards = document.querySelectorAll('.drag-card');
+const zones = document.querySelectorAll('.drop-zone');
+
+function pt(e){
+  const p = e.touches && e.touches.length ? e.touches[0] : (e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : e);
+  return {x:p.clientX, y:p.clientY};
+}
+function hit(zone,x,y){
+  const r = zone.getBoundingClientRect();
+  return x>r.left && x<r.right && y>r.top && y<r.bottom;
+}
+
+cards.forEach(card=>{
+  let dragging=false, sx=0, sy=0;
+
+  const onStart = e=>{
+    if(card.style.visibility==='hidden') return;
+    initAudio();
+    dragging=true;
+    const p=pt(e); sx=p.x; sy=p.y;
+    card.style.zIndex=100; card.style.transition='none';
+  };
+  const onMove = e=>{
+    if(!dragging) return;
+    if(e.cancelable) e.preventDefault();
+    const p=pt(e);
+    card.style.transform=`translate(${p.x-sx}px,${p.y-sy}px) scale(1.1)`;
+    zones.forEach(z=>{
+      if(z.classList.contains('filled')) return;
+      z.classList.toggle('hovered', hit(z,p.x,p.y));
+    });
+  };
+  const onEnd = e=>{
+    if(!dragging) return;
+    dragging=false;
+    card.style.zIndex=20;
+    const p=pt(e);
+    let matched=null;
+    zones.forEach(z=>{ z.classList.remove('hovered'); if(hit(z,p.x,p.y)) matched=z; });
+
+    if(matched && !matched.classList.contains('filled')){
+      if(matched.dataset.accept===card.dataset.id){
+        playSuccessSound();
+        matched.classList.add('filled');
+        const box=document.createElement('div');
+        box.className='placed-item';
+        box.appendChild(card.querySelector('svg').cloneNode(true));
+        const span=document.createElement('span');
+        span.textContent=card.dataset.label;
+        box.appendChild(span);
+        matched.appendChild(box);
+        card.style.visibility='hidden';
+        completedCount++;
+        if(completedCount===5){
+          setTimeout(()=>{ playWinFanfare(); launchConfetti(); document.getElementById('winModal').style.display='flex'; },400);
+        }
+      }else{
+        playErrorSound();
+        matched.classList.add('shake');
+        setTimeout(()=>matched.classList.remove('shake'),400);
+      }
+    }
+    card.style.transition='transform .3s ease';
+    card.style.transform='translate(0,0)';
+  };
+
+  card.addEventListener('mousedown',onStart);
+  window.addEventListener('mousemove',onMove);
+  window.addEventListener('mouseup',onEnd);
+  card.addEventListener('touchstart',onStart,{passive:false});
+  window.addEventListener('touchmove',onMove,{passive:false});
+  window.addEventListener('touchend',onEnd);
+  window.addEventListener('touchcancel',onEnd);
+});
+
+function launchConfetti(){
+  const colors=['#ff5252','#ffeb3b','#4caf50','#2196f3','#e040fb','#ff9800'];
+  for(let i=0;i<65;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration=(Math.random()*2+2)+'s';
+    c.style.borderRadius=Math.random()>.5?'50%':'0';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+function resetGame(){
+  completedCount=0;
+  document.getElementById('winModal').style.display='none';
+  zones.forEach(z=>{ z.classList.remove('filled'); const p=z.querySelector('.placed-item'); if(p) p.remove(); });
+  cards.forEach(c=>{ c.style.visibility='visible'; c.style.transform='translate(0,0)'; });
+}
+</script>
+</body>
+</html>
